@@ -2,14 +2,15 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
-	"go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"rest/user-service/controllers"
 	"rest/user-service/models"
 	"time"
+
+	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 )
 
 func main() {
@@ -24,7 +25,7 @@ func main() {
 
 func saveUser(w http.ResponseWriter, r *http.Request) {
 
-	var request SaveUserRequest
+	var request models.UserRequest
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	err := json.Unmarshal(reqBody, &request)
 	if err != nil {
@@ -49,19 +50,6 @@ func saveUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
-}
-
-type user struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-}
-
-var users = []user{
-	{ID: "1", Name: "User 01"},
-}
-
-type SaveUserRequest struct {
-	Description string `json:"description"`
 }
 
 func getUsers(w http.ResponseWriter, r *http.Request) {
